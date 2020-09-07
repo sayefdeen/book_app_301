@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Books</title>
+    <title>Books List</title>
   </head>
   <body>
-    <h1>Welcome To This Page</h1>
     <header>
       <nav>
         <a href="/">Home Page</a>
@@ -14,5 +13,14 @@
         <a href="/books/show">See You Books</a>
       </nav>
     </header>
+    <div class="container">
+      <% books.forEach((book)=>{ %>
+      <div class="book_container">
+        <img src="<%=book.image_url%>" />
+        <h2><%=book.title%></h2>
+        <a href="/getBook/<%=book.id%>">Click for Details</a>
+      </div>
+      <%});%>
+    </div>
   </body>
 </html>

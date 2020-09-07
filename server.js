@@ -5,6 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const superAgent = require('superagent');
+const pg = require('pg');
 const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 
@@ -12,44 +13,122 @@ app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
 // To Read the body of the POST HTTP requsets
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
+
+// Client
+
+const client = new pg.Client(process.env.DATABASE_URL);
 
 // Routs
-app.get('/', getSearchHanlde);
+app.get('/', mainPageHandler);
+app.get('/searches/new', renderNewSearch);
+app.get('/books/show', renderShowBooksPage);
+app.get('/getBook/:bookID', viewBookDetails);
 app.post('/searches/show', postSearchHanlde);
+app.post('/addBook', insertBookIntoDB);
 
-// Functions
+// ******************* Handelrres ***************
 
 // newSearchHanlde
 
-function getSearchHanlde(req, res) {
+function mainPageHandler(req, res) {
+  res.render('pages/index');
+}
+
+function renderNewSearch(req, res) {
   res.render('pages/searches/new');
 }
 
+function renderShowBooksPage(req, res) {
+  const selectSQL = 'SELECT * FROM books_table';
+  client
+    .query(selectSQL)
+    .then((result) => {
+      res.render('pages/books/show', { books: result.rows });
+    })
+    .catch(() => {
+      errorPage(
+        req,
+        res,
+        'There is an error in rendering the data from database'
+      );
+    });
+}
+
+// Get the Book data From the API
 function postSearchHanlde(req, res) {
   const data = req.body;
-  const titleORauthor = Object.keys(data)[1];
+  const titleORauthor = data.select;
   const name = data.searchbox;
-  const url = `https://www.googleapis.com/books/v1/volumes?q=${name}+in${titleORauthor}`;
-  superAgent.get(url).then((results) => {
-    let bookArray = results.body.items.map((book) => {
-      return new Books(book);
+  const url = `https://www.googleapis.com/books/v1/volumes?q=+in${titleORauthor}:${name}`;
+  superAgent
+    .get(url)
+    .then((results) => {
+      let bookArray = results.body.items.map((book) => {
+        return new Books(book);
+      });
+      res.render('pages/searches/show', { books: bookArray });
+    })
+    .catch(() => {
+      errorPage(req, res, 'There is an error in the search API');
     });
-    res.render('pages/searches/show', { books: bookArray });
-  });
 }
+
+function insertBookIntoDB(req, res) {
+  let { author, title, isbn, image_url, descriptions } = req.body;
+  console.log(req.body);
+  let insertSQL =
+    'INSERT INTO books_table (author,title,isbn,image_url,descriptions) VALUES ($1,$2,$3,$4,$5)';
+  let safeValues = [author, title, isbn, image_url, descriptions];
+  client
+    .query(insertSQL, safeValues)
+    .then(() => {
+      console.log('added to dataBase');
+    })
+    .catch(() => {
+      errorPage(req, res, 'There is an error in the insert query');
+    });
+}
+
+function viewBookDetails(req, res) {
+  let selectSQL = 'SELECT * FROM books_table WHERE id =$1';
+  const id = req.params.bookID;
+  let values = [id];
+  client
+    .query(selectSQL, values)
+    .then((data) => {
+      res.render('pages/books/detail', { books: data.rows });
+    })
+    .catch(() => {
+      errorPage(req, res, 'There is an error in viewing details');
+    });
+}
+
+// ******************* Constructors ***************
 
 // Books Constructor
 
 function Books(book) {
-  this.title = book.volumeInfo.title;
-  this.image =
-    book.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
   this.author = book.volumeInfo.authors || `There is no authors`;
-  this.description = book.volumeInfo.description || `There is no description`;
+  this.title = book.volumeInfo.title;
+  // this.isbn =
+  //   book.volumeInfo.industryIdentifiers[0].identifier || 'There is no isbn';
+  this.isbn = book.volumeInfo.industryIdentifiers
+    ? book.volumeInfo.industryIdentifiers[0].identifier || 'There is no isbn'
+    : 'There is no isbn';
+  this.image_url =
+    book.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
+  this.descriptions = book.volumeInfo.description || `There is no description`;
+}
+
+// Error Function
+function errorPage(req, res, massage = `Sorry,something went wrong`) {
+  res.render('/pages/error', { error: massage });
 }
 
 // Make Sure the Server is working
-app.listen(PORT, () => {
-  console.log(`Listening in port ${PORT}`);
+client.connect().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Listining to ${PORT}`);
+  });
 });
