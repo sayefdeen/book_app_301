@@ -1,0 +1,27 @@
+{
+  "name": "book_app_301",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sayefdeen/book_app_301.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sayefdeen/book_app_301/issues"
+  },
+  "homepage": "https://github.com/sayefdeen/book_app_301#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "superagent": "^6.1.0"
+  }
+}
