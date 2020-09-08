@@ -4,23 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Best Books</title>
+    <%- include('../../layouts/links') %>
+    <link rel="stylesheet" href="../../../styles/rest.css" />
+    <link rel="stylesheet" href="../../../styles/base.css" />
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="/">Home Page</a>
-        <a href="/searches/new">Search For a new Book</a>
-        <a href="../pages/books/show.ejs">See You Books</a>
-      </nav>
-    </header>
-
-    <div class="container">
+    <%- include('../../layouts/header') %>
+    <div id="mainTitle">
+      <p>Search Results</p>
+    </div>
+    <div class="container column">
       <% books.forEach((item,index)=>{ %>
       <div class="book_container">
         <img src="<%=item.image_url%>" />
         <h2><%=item.title%></h2>
-        <h3><%=item.author%></h3>
-        <h3><%=item.descriptions%></h3>
+        <p><%=item.author%></p>
+        <p><%=item.descriptions%></p>
         <form action="/addBook" method="post">
           <input type="hidden" name="author" value="<%=item.author%>" />
           <input type="hidden" name="title" value="<%=item.title%>" />
@@ -31,10 +30,12 @@
             name="descriptions"
             value="<%=item.descriptions%>"
           />
-          <input type="submit" value="Add Book" />
+          <input type="submit" value="Select This Book" />
         </form>
       </div>
       <%});%>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../../../js/app.js"></script>
   </body>
 </html>

@@ -21,7 +21,6 @@ header h1 {
   font-size: 25px;
   margin: 0 15px;
 }
-
 #dropbtn {
   position: absolute;
   right: 0;
@@ -29,7 +28,7 @@ header h1 {
   font-size: 35px;
   color: white;
   border: none;
-  padding: 15px;
+  /* padding: 15px; */
   background-color: #000000;
 }
 
@@ -97,6 +96,8 @@ header h1 {
 #searchForm input[type='submit'] {
   background-color: #000000;
   color: white;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .form_content {
@@ -113,3 +114,71 @@ header h1 {
 }
 
 /* New Form Page End */
+
+/* Searches Show Page Start */
+
+.container {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.book_container {
+  width: 20%;
+  text-align: center;
+  border: solid 1px;
+  background-color: rgb(156, 153, 149);
+  margin: 40px 0;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.book_container img {
+  width: 50%;
+  object-fit: fill;
+  margin: 10px 0;
+  border: 1px solid;
+  padding: 10px;
+  background-color: white;
+}
+
+.book_container h2 {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 2px 2px rgb(211, 73, 73);
+  margin-bottom: 10px;
+}
+
+.book_container p {
+  font-size: 15px;
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+
+.book_container p:nth-of-type(2) {
+  text-justify: auto;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+.book_container input[type='submit'] {
+  width: 50%;
+  padding: 10px;
+  margin: 5px 0;
+  color: white;
+  background-color: #000000;
+  border: none;
+}
+
+#mainTitle {
+  font-weight: bold;
+  font-size: 25px;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Searches Show Page End */
