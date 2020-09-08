@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="../../../styles/base.css" />
   </head>
   <body>
     <header>
@@ -21,8 +22,28 @@
         <h2><%=book.author%></h2>
         <h2><%=book.isbn%></h2>
         <h2><%=book.descriptions%></h2>
+        <form action="/deletBook/<%= book.id %>?_method=delete " method="POST">
+          <button type="submit">Delete Book</button>
+        </form>
+        <button id="updateBtn">Update</button>
+        <form
+          action="/updateBook/<%= book.id %>?_method=put "
+          id="updateForm"
+          method="POST"
+        >
+          <input type="text" name="author" value="<%=book.author%>" />
+          <input type="text" name="title" value="<%=book.title%>" />
+          <input type="text" name="isbn" value="<%=book.isbn%>" />
+          <input type="text" name="image_url" value="<%=book.image_url%>" />
+          <textarea name="descriptions" cols="30" rows="10">
+            <%=book.descriptions%> 
+          </textarea>
+          <input type="submit" value="Update" />
+        </form>
       </div>
       <%});%>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../../../js/app.js"></script>
   </body>
 </html>
