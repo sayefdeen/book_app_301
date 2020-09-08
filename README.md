@@ -25,6 +25,7 @@ This application is to test the POST and GET HTTP request in Nodejs, you can usr
 
 06/09/2020 : You can search google book API by title or auother, GET and POST routs
 07/09/2020 : You can select a book an add it to a seperated list so you can see them.
+08/09/2020 : You can now delete and update the book
 
 ## Credits and Collaborations
 
@@ -51,3 +52,15 @@ Start time: 2:00 PM
 Finish time: 6:00 PM
 
 Actual time needed to complete: 4 hours
+
+## 08/09/2020
+
+Number and name of feature: 2) Delete and Update
+
+Estimate of time needed to complete: 3 hours
+
+Start time: 1:30 PM
+
+Finish time: 3:00 PM
+
+Actual time needed to complete: 1:30 hours
