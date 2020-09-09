@@ -1,9 +1,9 @@
 // For the Update button in details
 
-$('#updateForm').hide();
+$('#updateForm_container').hide();
 
 $('#updateBtn').click(() => {
-  $('#updateForm').toggle();
+  $('#updateForm_container').toggle();
 });
 
 // For the Drop Button

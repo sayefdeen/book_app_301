@@ -43,12 +43,18 @@ function renderNewSearch(req, res) {
   res.render('pages/searches/new');
 }
 
-function renderShowBooksPage(req, res) {
+async function renderShowBooksPage(req, res) {
+  const count = await client
+    .query('SELECT COUNT(id) FROM books_table')
+    .then((result) => result.rows[0].count);
   const selectSQL = 'SELECT * FROM books_table';
   client
     .query(selectSQL)
     .then((result) => {
-      res.render('pages/books/show', { books: result.rows });
+      res.render('pages/books/show', {
+        books: result.rows,
+        numberOfBooks: count,
+      });
     })
     .catch(() => {
       errorPage(
@@ -78,7 +84,6 @@ function postSearchHanlde(req, res) {
 
 function insertBookIntoDB(req, res) {
   let { author, title, isbn, image_url, descriptions } = req.body;
-  console.log(req.body);
   let insertSQL =
     'INSERT INTO books_table (author,title,isbn,image_url,descriptions) VALUES ($1,$2,$3,$4,$5)';
   let safeValues = [author, title, isbn, image_url, descriptions];
@@ -123,7 +128,6 @@ function updateBook(req, res) {
     descriptions,
     req.params.bookID,
   ];
-  console.log(req.body);
   client.query(updateSQL, safeValues).then(() => {
     res.redirect(`/getBook/${req.params.bookID}`);
   });
@@ -135,7 +139,6 @@ function deleteBook(req, res) {
   let deleteSQL = 'DELETE FROM books_table WHERE id=$1';
   let safeValue = [req.params.bookID];
   client.query(deleteSQL, safeValue).then(() => {
-    console.log('deleted');
     res.redirect('/books/show');
   });
 }
@@ -147,16 +150,12 @@ function deleteBook(req, res) {
 function Books(book) {
   this.author = book.volumeInfo.authors || `There is no authors`;
   this.title = book.volumeInfo.title;
-  // this.isbn =
-  //   book.volumeInfo.industryIdentifiers[0].identifier || 'There is no isbn';
   this.isbn = book.volumeInfo.industryIdentifiers
     ? book.volumeInfo.industryIdentifiers[0].identifier || 'There is no isbn'
-    : 'There is no isbn';
-  this.image_url =
-    book.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
-  // this.descriptions =
-  //   book.volumeInfo.description.substring(0, 200).trim() ||
-  //   `There is no description`;
+    : 'There is no isbn in the API';
+  this.image_url = book.volumeInfo.thumbnail
+    ? book.volumeInfo.thumbnail
+    : `https://i.imgur.com/J5LVHEL.jpg`;
   this.descriptions = book.volumeInfo.description
     ? book.volumeInfo.description.substring(0, 200).trim() ||
       `There is no description`

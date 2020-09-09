@@ -22,27 +22,42 @@
           <form
             action="/deletBook/<%= book.id %>?_method=delete "
             method="POST"
+            onsubmit="return confirm('Are you sure you want to delete this item?'); "
           >
             <button type="submit">Delete Book</button>
           </form>
           <button id="updateBtn">Update</button>
         </div>
-        <form
-          action="/updateBook/<%= book.id %>?_method=put "
-          id="updateForm"
-          method="POST"
-        >
-          <input type="text" name="author" value="<%=book.author%>" />
-          <input type="text" name="title" value="<%=book.title%>" />
-          <input type="text" name="isbn" value="<%=book.isbn%>" />
-          <input type="text" name="image_url" value="<%=book.image_url%>" />
-          <textarea name="descriptions" cols="30" rows="10">
-            <%=book.descriptions%> 
-          </textarea>
-          <input type="submit" value="Update" />
-        </form>
       </div>
       <%});%>
+    </div>
+    <div id="updateForm_container" class="row">
+      <form
+        action="/updateBook/<%= books[0].id %>?_method=put "
+        id="updateForm"
+        method="POST"
+        class="column"
+      >
+        <input type="text" name="author" value="<%=books[0].author%>" />
+        <input type="text" name="title" value="<%=books[0].title%>" />
+        <input
+          type="text"
+          readonly="readonly"
+          name="isbn"
+          value="<%=books[0].isbn%>"
+        />
+        <img src="<%= books[0].image_url %> " alt="" />
+        <input
+          type="text"
+          readonly="readonly"
+          name="image_url"
+          value="<%=books[0].image_url%>"
+        />
+        <textarea name="descriptions" cols="30" rows="10">
+<%=books[0].descriptions%></textarea
+        >
+        <input type="submit" value="Update" />
+      </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../../../js/app.js"></script>

@@ -11,7 +11,7 @@
   <body>
     <%- include('../../layouts/header') %>
     <div id="mainTitle">
-      <p><span id="numberOfBooks"></span> Saved Books</p>
+      <p><span id="numberOfBooks"><%= numberOfBooks %></span> Saved Books</p>
     </div>
     <div class="container column">
       <% books.forEach((book)=>{ %>
