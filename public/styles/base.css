@@ -161,6 +161,10 @@ header h1 {
   text-justify: auto;
   line-height: 1.5;
   text-align: justify;
+  overflow: scroll;
+  height: 100px;
+  background-color: white;
+  padding-left: 5px;
 }
 
 .book_container input[type='submit'] {
@@ -182,3 +186,19 @@ header h1 {
 }
 
 /* Searches Show Page End */
+
+/* details Book start */
+.btnOptions {
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.btnOptions button {
+  padding: 10px 15px;
+  background-color: #333333;
+  color: white;
+  border: none;
+  font-size: 20px;
+  border-radius: 5px;
+}
+/* details Book end */

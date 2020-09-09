@@ -3,29 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Details</title>
+    <%- include('../../layouts/links') %>
+    <link rel="stylesheet" href="../../../styles/rest.css" />
     <link rel="stylesheet" href="../../../styles/base.css" />
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="/">Home Page</a>
-        <a href="/searches/new">Search For a new Book</a>
-        <a href="/books/show">See You Books</a>
-      </nav>
-    </header>
-    <div class="container">
+    <%- include('../../layouts/header') %>
+    <div class="container column">
       <% books.forEach((book)=>{ %>
       <div class="book_container">
         <img src="<%=book.image_url%>" />
         <h2><%=book.title%></h2>
-        <h2><%=book.author%></h2>
-        <h2><%=book.isbn%></h2>
-        <h2><%=book.descriptions%></h2>
-        <form action="/deletBook/<%= book.id %>?_method=delete " method="POST">
-          <button type="submit">Delete Book</button>
-        </form>
-        <button id="updateBtn">Update</button>
+        <p><%=book.author%></p>
+        <p><%=book.descriptions%></p>
+        <p><%=book.isbn%></p>
+        <div class="row btnOptions">
+          <form
+            action="/deletBook/<%= book.id %>?_method=delete "
+            method="POST"
+          >
+            <button type="submit">Delete Book</button>
+          </form>
+          <button id="updateBtn">Update</button>
+        </div>
         <form
           action="/updateBook/<%= book.id %>?_method=put "
           id="updateForm"
