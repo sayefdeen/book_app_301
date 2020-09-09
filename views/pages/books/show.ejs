@@ -4,23 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Books List</title>
+    <%- include('../../layouts/links') %>
+    <link rel="stylesheet" href="../../../styles/rest.css" />
+    <link rel="stylesheet" href="../../../styles/base.css" />
   </head>
   <body>
-    <header>
-      <nav>
-        <a href="/">Home Page</a>
-        <a href="/searches/new">Search For a new Book</a>
-        <a href="/books/show">See You Books</a>
-      </nav>
-    </header>
-    <div class="container">
+    <%- include('../../layouts/header') %>
+    <div id="mainTitle">
+      <p><span id="numberOfBooks"><%= numberOfBooks %></span> Saved Books</p>
+    </div>
+    <div class="container column">
       <% books.forEach((book)=>{ %>
       <div class="book_container">
         <img src="<%=book.image_url%>" />
         <h2><%=book.title%></h2>
-        <a href="/getBook/<%=book.id%>">Click for Details</a>
+        <form action="/getBook/<%=book.id%>" method="GET">
+          <input type="submit" value="View Details" />
+        </form>
       </div>
       <%});%>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../../../js/app.js"></script>
   </body>
 </html>
